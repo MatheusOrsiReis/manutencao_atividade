@@ -1,5 +1,8 @@
 const Usuario = require('../models/Usuario')
 
+const cryptoJs = require('crypt-js')
+const CHAVE_SECRETA = 'segredo'//deve ficar no .env
+
 const cadastrar = async (req, res)=>{
     const valores = req.body
     console.log(valores)
@@ -8,9 +11,24 @@ const cadastrar = async (req, res)=>{
         return res.status(400).json({message: 'Todos os campos são obrigatórios!'})
     }
 
+    if(!valores.cpf.length < 11 ){
+         return res.status(400).json({message: 'CPF inválido'})
+    }
+
     try{
-        await Usuario.create(valores)
-        res.status(201).json({message: 'Usuario Cadastrado com sucesso!'})
+        const cpfCripto = cryptoJs.AES.encrypt(valores.cpf, CHAVE_SECRETA).toString()
+        const senhaCripto = cryptoJs.AES.encrypt(valores.senha, CHAVE_SECRETA).toString()
+
+        await Usuario.create({
+            nome: valores.nome,
+            email: valores.email,
+            senha: senhaCripto,
+            cpf: cpfCripto,
+            endereco: valores.endereco,
+            celular: valores.celular
+            
+        })
+        res.status(201).json({message: 'dados cadastrados com sucesso'})
     }catch(err){
         console.error('Não foi possível cadastrar o Usuário',err)
         res.status(500).json({message: 'Não foi possível cadastrar o Usuário'})
