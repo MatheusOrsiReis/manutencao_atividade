@@ -11,6 +11,8 @@ btn_cadastrar.addEventListener('click', (e) => {
     const usuario = { 
         nome: nome,
         email: email,
+        cpf: document.getElementById('cpf').value,
+        telefone: document.getElementById('telefone').value,
         senha: senha
     }
 
@@ -26,7 +28,7 @@ btn_cadastrar.addEventListener('click', (e) => {
         console.log(dados.message)
         resposta.innerHTML = ''
         resposta.innerHTML += `<p>${dados.message}</p>`
-        document.querySelector('form').reset()
+        if (dados.message === 'dados cadastrados com sucesso') document.querySelector('form').reset()
     })
     .catch((err) => {
         console.error('Erro ao cadastrar o usuário', err)

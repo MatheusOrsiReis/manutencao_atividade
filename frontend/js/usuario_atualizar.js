@@ -17,9 +17,14 @@ btn_atualizar.addEventListener('click', (e) => {
     const usuarioAtualizado = {
         nome: nome,
         email: email,
+        cpf: document.getElementById('cpf').value,
+        telefone: document.getElementById('telefone').value,
         senha: senha
     }
 
+    Object.keys(usuarioAtualizado).forEach(campo => {
+        if (usuarioAtualizado[campo] === '') delete usuarioAtualizado[campo]
+    })
     fetch(`http://localhost:3000/usuario/${codUsuario}`, {
         method: 'PUT',
         headers: {
@@ -60,7 +65,7 @@ function criarTbody(dados) {
         corpo += `<td>${el.codUsuario}</td>`
         corpo += `<td>${el.nome}</td>`
         corpo += `<td>${el.email}</td>`
-        corpo += `<td>${el.senha}</td>`
+        corpo += `<td>${el.telefone}</td>`
         corpo += `</tr>`
     })
     corpo += `</tbody>`
@@ -75,7 +80,7 @@ function criarThead() {
                 <th>Código</th>
                 <th>Nome</th>
                 <th>Email</th>
-                <th>Senha</th>
+                <th>Telefone</th>
             </tr>
         </thead>
     `
