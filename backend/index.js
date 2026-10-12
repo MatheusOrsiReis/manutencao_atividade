@@ -3,6 +3,9 @@ const app = express()
 const cors = require('cors')
 
 const conn = require('./db/conn')
+require('./models/rel')
+const authController = require('./controller/auth.controller')
+const authMiddleware = require('./middleware/auth.middleware')
 const produtoController = require('./controller/produto.controller')
 const usuarioController = require('./controller/usuario.controller')
 const movimentoController = require('./controller/movimento.controller')
@@ -16,6 +19,8 @@ app.use(cors())
 //--------------- Rotas --------------
 
 app.post('/usuario', usuarioController.cadastrar)
+app.post('/login', authController.login)
+app.use(authMiddleware)
 app.get('/usuarios', usuarioController.listar)
 app.get('/usuario/:id', usuarioController.buscarPorCod)
 app.get('/usuario/buscar/:nome', usuarioController.buscarPorNome)
@@ -41,7 +46,7 @@ app.get('/',(req,res)=>{
 })
 
 // -------------- Server -------------
-conn.sync()
+conn.authenticate()
 .then(()=>{
     app.listen(PORT, hostname, ()=>{
         console.log(`Servidor rodando em http://${hostname}:${PORT}`)

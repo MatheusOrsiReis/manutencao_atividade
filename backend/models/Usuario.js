@@ -12,15 +12,16 @@ const Usuario = db.define('usuario',{
         allowNull: false
     },
     email: {
+        unique: true,
         type: DataTypes.STRING(100),
         allowNull: false
     },
     senha: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false
     },
     cpf:{
-        type: DataTypes.STRING(100),
+        type: DataTypes.TEXT,
         allowNull: false
     },
     telefone:{

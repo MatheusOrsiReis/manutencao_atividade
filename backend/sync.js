@@ -3,7 +3,9 @@ const { Usuario, Produto, Movimento } = require('./models/rel')
 
 async function syncDataBase(){
     try{
-        await conn.sync({force: true})
+        await Usuario.sync()
+        await Produto.sync()
+        await Movimento.sync()
         console.log('Tabelas sincronizadas')
 
     // Injetar a criação da view vw_hostorico_saidas
